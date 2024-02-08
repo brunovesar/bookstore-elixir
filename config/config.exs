@@ -13,7 +13,7 @@ config :bookstore,
 
 # Configures the endpoint
 config :bookstore, BookstoreWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "127.0.0.1", port: "5432"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: BookstoreWeb.ErrorHTML, json: BookstoreWeb.ErrorJSON],

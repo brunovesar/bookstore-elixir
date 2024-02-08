@@ -7,13 +7,15 @@ services:
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: bookstore
+    ports:
+      - "5432:5432"
 
   server:
     build:
       context: .
       dockerfile: docker/Dockerfile
     command: elixir --sname bookstore --cookie bookstore -S mix phx.server
-    entrypoint: ['docker/entrypoint.sh']
+    entrypoint: [ 'docker/entrypoint.sh' ]
     ports:
       - "4000:4000"
     volumes:
