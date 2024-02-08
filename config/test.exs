@@ -10,7 +10,7 @@ config :bcrypt_elixir, :log_rounds, 1
 # Run `mix help test` for more information.
 config :bookstore, Bookstore.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "password",
   hostname: "127.0.0.1",
   database: "bookstore_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
