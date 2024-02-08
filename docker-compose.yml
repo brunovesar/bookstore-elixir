@@ -1,0 +1,20 @@
+version: '3.3'
+
+services:
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: bookstore
+
+  server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: elixir --sname bookstore --cookie bookstore -S mix phx.server
+    entrypoint: ['docker/entrypoint.sh']
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
