@@ -3,3 +3,68 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+li.header {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+img.logo {
+    height: 100px;
+}
+
+/* Book List */
+p.book_list_header {
+    margin: 16px;
+    font-size: 18px;
+}
+div.book_list_content {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 350px;
+}
+p.book_list_title {
+    font-size: 18px;
+}
+p.book_list_author {
+    font-size: 18px;
+}
+p.book_list_category {
+    font-size: 18px;
+}
+img.book_list_image {
+    width: 200px;
+}
+
+/* Book View */
+div.book_view {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+div.book_view_content {
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+p.book_view_title {
+    font-size: 24px;
+    width: 500px;
+}
+p.book_view_description {
+    font-size: 18px;
+}
+img.book_view_image {
+    margin-bottom: 16px;
+    width: 500px;
+}

@@ -1,5 +1,6 @@
 defmodule BookstoreWeb.Router do
   use BookstoreWeb, :router
+  import Phoenix.LiveView.Router
 
   import BookstoreWeb.UserAuth
 
@@ -20,7 +21,9 @@ defmodule BookstoreWeb.Router do
   scope "/", BookstoreWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", BooksLive
+    live "/books", BooksLive
+    get "/books/:id", BookController, :show
   end
 
   # Other scopes may use custom stacks.
@@ -62,10 +65,12 @@ defmodule BookstoreWeb.Router do
 
   scope "/", BookstoreWeb do
     pipe_through [:browser, :require_authenticated_user]
-
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+
+    get "/books/:id/edit", BookController, :edit
+    put "/books/:id", BookController, :update
   end
 
   scope "/", BookstoreWeb do

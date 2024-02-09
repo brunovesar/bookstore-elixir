@@ -1,0 +1,40 @@
+<div>
+  <ul id="books" phx-update="stream" phx-viewport-bottom="load-more">
+    <li class="header" id="book_list_header">
+      <p class="book_list_header">
+        Cover
+      </p>
+      <p class="book_list_header">
+        Title
+      </p>
+      <p class="book_list_header">
+        Author
+      </p>
+      <p class="book_list_header">
+        Category
+      </p>
+    </li>
+    <%= for item <- @items do %>
+      <li id={"item-#{item.isbn}"}>
+        <a href={~p"/books/#{item.isbn}"}>
+          <div class="book_list_content">
+            <img
+              class="book_list_image"
+              src={~p"/images/books/#{item.image}"}
+              alt="Image not found"
+            />
+            <p class="book_list_title">
+              <%= item.title %>
+            </p>
+            <p class="book_list_author">
+              <%= item.author.name %>
+            </p>
+            <p class="book_list_category">
+              <%= item.category.name %>
+            </p>
+          </div>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</div>

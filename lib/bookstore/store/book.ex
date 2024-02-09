@@ -1,5 +1,6 @@
 defmodule Bookstore.Store.Book do
   use Ecto.Schema
+  alias Ecto.Changeset
 
   @primary_key {:isbn, :string, []}
   schema "books" do
@@ -14,5 +15,21 @@ defmodule Bookstore.Store.Book do
     belongs_to :author, Bookstore.Store.Author
 
     timestamps(type: :utc_datetime)
+  end
+
+  def book_changeset(book, attrs, opts \\ []) do
+    Changeset.cast(book, attrs, [
+      :title,
+      :publish_date,
+      :price,
+      :quantity,
+      :editor,
+      :image,
+      :author_id,
+      :category_id
+    ])
+    |> case do
+      %{changes: _} = changeset -> changeset
+    end
   end
 end

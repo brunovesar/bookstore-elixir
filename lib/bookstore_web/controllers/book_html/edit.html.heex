@@ -1,0 +1,19 @@
+<div class="book_view">
+  <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image not found" />
+
+  <div class="book_view_content">
+    <.simple_form :let={f} for={@changeset} action={~p"/books/#{@item.isbn}"}>
+      <.input field={f[:isbn]} type="hidden" value={@item.isbn} />
+      <.input field={f[:title]} label="Title" required />
+      <.input field={f[:author_id]} type="select" options={@authors} label="Price" required />
+      <.input field={f[:category_id]} type="select" options={@categories} label="Price" required />
+      <.input field={f[:price]} type="number" label="Price" required />
+      <.input field={f[:quantity]} type="number" label="Quantity" required />
+      <.input field={f[:publish_date]} type="date" label="Publish date" required />
+      <.input field={f[:editor]} label="Editor" required />
+      <:actions>
+        <.button phx-disable-with="Saving..." class="w-full">Save</.button>
+      </:actions>
+    </.simple_form>
+  </div>
+</div>

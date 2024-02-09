@@ -1,0 +1,28 @@
+<div class="book_view">
+  <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image not found" />
+  <div class="book_view_content">
+    <p class="book_view_title">
+      Title: <%= @item.title %>
+    </p>
+    <p class="book_view_description">
+      Author: <%= @item.author.name %>
+    </p>
+    <p class="book_view_description">
+      Category: <%= @item.category.name %>
+    </p>
+    <p class="book_view_description">
+      Price: <%= @item.price %>
+    </p>
+    <p class="book_view_description">
+      Quantity: <%= @item.quantity %>
+    </p>
+    <p class="book_view_description">
+      Editor: <%= @item.editor %>
+    </p>
+  </div>
+  <%= if @current_user do %>
+    <.link href={~p"/books/#{@item.isbn}/edit"}>
+      edit
+    </.link>
+  <% end %>
+</div>
