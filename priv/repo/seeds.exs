@@ -16,14 +16,28 @@ bruno =
     birth_date: ~D[1993-08-27]
   })
 
-rodri =
+tolkien =
   Bookstore.Repo.insert!(%Bookstore.Store.Author{
-    name: "Rodrigo Vescovi",
-    birth_date: ~D[1970-05-06]
+    name: "J. R. R. Tolkien",
+    birth_date: ~D[1892-01-03]
+  })
+
+verne =
+  Bookstore.Repo.insert!(%Bookstore.Store.Author{
+    name: "Jules Verne",
+    birth_date: ~D[1828-02-08]
+  })
+
+dumas =
+  Bookstore.Repo.insert!(%Bookstore.Store.Author{
+    name: "Alexander Dumas",
+    birth_date: ~D[1802-07-24]
   })
 
 all = Bookstore.Repo.insert!(%Bookstore.Store.Category{name: "All"})
-fiction = Bookstore.Repo.insert!(%Bookstore.Store.Category{name: "Fiction", parent_id: all.id})
+
+fiction =
+  Bookstore.Repo.insert!(%Bookstore.Store.Category{name: "Fiction", parent_id: all.id})
 
 historical =
   Bookstore.Repo.insert!(%Bookstore.Store.Category{name: "Historical", parent_id: all.id})
@@ -31,36 +45,91 @@ historical =
 books_to_insert = [
   %Bookstore.Store.Book{
     isbn: "0000-0001",
-    title: "My first book",
-    publish_date: ~D[2021-08-28],
-    price: 10.0,
+    title: "Prince of thieves",
+    publish_date: ~D[1830-08-28],
+    price: 25.0,
     quantity: 10,
     editor: "Planeta",
-    image: "path/to/file",
-    author_id: bruno.id,
+    image: "prince_of_thieves.jpg",
+    author_id: dumas.id,
     category_id: fiction.id
   },
   %Bookstore.Store.Book{
     isbn: "0000-0002",
-    title: "My second book, one historical",
-    publish_date: ~D[2022-08-28],
-    price: 15.0,
+    title: "The count of Montecristo",
+    publish_date: ~D[1832-08-28],
+    price: 25.0,
     quantity: 10,
     editor: "Planeta",
-    image: "path/to/file",
-    author_id: bruno.id,
-    category_id: historical.id
+    image: "count_montecristo.jpg",
+    author_id: dumas.id,
+    category_id: fiction.id
   },
   %Bookstore.Store.Book{
-    isbn: "0000-0003",
-    title: "Infancias perdidas",
-    publish_date: ~D[2001-08-28],
+    isbn: "0001-0003",
+    title: "The fellowship of the ring",
+    publish_date: ~D[1954-04-12],
     price: 25.0,
     quantity: 10,
     editor: "Altaya",
-    image: "path/to/file",
-    author_id: rodri.id,
-    category_id: historical.id
+    image: "the_lord_of_the_rings_1.jpg",
+    author_id: tolkien.id,
+    category_id: fiction.id
+  },
+  %Bookstore.Store.Book{
+    isbn: "0001-0004",
+    title: "The two towers",
+    publish_date: ~D[1954-08-12],
+    price: 25.0,
+    quantity: 10,
+    editor: "Altaya",
+    image: "the_lord_of_the_rings_2.jpg",
+    author_id: tolkien.id,
+    category_id: fiction.id
+  },
+  %Bookstore.Store.Book{
+    isbn: "0001-0005",
+    title: "The return of the king",
+    publish_date: ~D[1955-02-12],
+    price: 25.0,
+    quantity: 10,
+    editor: "Altaya",
+    image: "the_lord_of_the_rings_3.jpg",
+    author_id: tolkien.id,
+    category_id: fiction.id
+  },
+  %Bookstore.Store.Book{
+    isbn: "0002-0006",
+    title: "Journey to the center of the earth",
+    publish_date: ~D[1849-04-12],
+    price: 25.0,
+    quantity: 10,
+    editor: "Altaya",
+    image: "journey_center_earth.jpg",
+    author_id: verne.id,
+    category_id: fiction.id
+  },
+  %Bookstore.Store.Book{
+    isbn: "0002-0007",
+    title: "20000 Leagues under the sea",
+    publish_date: ~D[1851-04-12],
+    price: 25.0,
+    quantity: 10,
+    editor: "Altaya",
+    image: "20000_leagues_under_the_sea.jpg",
+    author_id: verne.id,
+    category_id: fiction.id
+  },
+  %Bookstore.Store.Book{
+    isbn: "0002-0008",
+    title: "Around the world in eighty days",
+    publish_date: ~D[1852-08-28],
+    price: 25.0,
+    quantity: 10,
+    editor: "Planeta",
+    image: "around_the_world_in_eighty_days.jpg",
+    author_id: verne.id,
+    category_id: fiction.id
   }
 ]
 
