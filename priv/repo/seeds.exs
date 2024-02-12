@@ -42,6 +42,12 @@ fiction =
 historical =
   Bookstore.Repo.insert!(%Bookstore.Store.Category{name: "Historical", parent_id: all.id})
 
+fantastic =
+  Bookstore.Repo.insert!(%Bookstore.Store.Category{name: "Fantastic", parent_id: fiction.id})
+
+trips =
+  Bookstore.Repo.insert!(%Bookstore.Store.Category{name: "Trips", parent_id: fiction.id})
+
 books_to_insert = [
   %Bookstore.Store.Book{
     isbn: "0000-0001",
@@ -74,7 +80,7 @@ books_to_insert = [
     editor: "Altaya",
     image: "the_lord_of_the_rings_1.jpg",
     author_id: tolkien.id,
-    category_id: fiction.id
+    category_id: fantastic.id
   },
   %Bookstore.Store.Book{
     isbn: "0001-0004",
@@ -85,7 +91,7 @@ books_to_insert = [
     editor: "Altaya",
     image: "the_lord_of_the_rings_2.jpg",
     author_id: tolkien.id,
-    category_id: fiction.id
+    category_id: fantastic.id
   },
   %Bookstore.Store.Book{
     isbn: "0001-0005",
@@ -96,7 +102,7 @@ books_to_insert = [
     editor: "Altaya",
     image: "the_lord_of_the_rings_3.jpg",
     author_id: tolkien.id,
-    category_id: fiction.id
+    category_id: fantastic.id
   },
   %Bookstore.Store.Book{
     isbn: "0002-0006",
@@ -107,7 +113,7 @@ books_to_insert = [
     editor: "Altaya",
     image: "journey_center_earth.jpg",
     author_id: verne.id,
-    category_id: fiction.id
+    category_id: trips.id
   },
   %Bookstore.Store.Book{
     isbn: "0002-0007",
@@ -118,7 +124,7 @@ books_to_insert = [
     editor: "Altaya",
     image: "20000_leagues_under_the_sea.jpg",
     author_id: verne.id,
-    category_id: fiction.id
+    category_id: trips.id
   },
   %Bookstore.Store.Book{
     isbn: "0002-0008",
@@ -129,7 +135,7 @@ books_to_insert = [
     editor: "Planeta",
     image: "around_the_world_in_eighty_days.jpg",
     author_id: verne.id,
-    category_id: fiction.id
+    category_id: trips.id
   }
 ]
 

@@ -1,4 +1,10 @@
 <div>
   <h1>Books</h1>
-  <.live_component module={BookstoreWeb.BooksListComponent} items={@items} id="books_list" />
+  <.live_component
+    module={BookstoreWeb.BooksListComponent}
+    categories={@categories}
+    filter={@filter}
+    streams={@streams}
+    id="books_list"
+  />
 </div>

@@ -5,8 +5,14 @@
     <.simple_form :let={f} for={@changeset} action={~p"/books/#{@item.isbn}"}>
       <.input field={f[:isbn]} type="hidden" value={@item.isbn} />
       <.input field={f[:title]} label="Title" required />
-      <.input field={f[:author_id]} type="select" options={@authors} label="Price" required />
-      <.input field={f[:category_id]} type="select" options={@categories} label="Price" required />
+      <.input field={f[:author_id]} type="select" options={@authors} label="Author" required />
+      <.input
+        field={f[:category_id]}
+        type="select"
+        options={@categories}
+        label="Category"
+        required
+      />
       <.input field={f[:price]} type="number" label="Price" required />
       <.input field={f[:quantity]} type="number" label="Quantity" required />
       <.input field={f[:publish_date]} type="date" label="Publish date" required />

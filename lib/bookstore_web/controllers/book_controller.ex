@@ -26,7 +26,6 @@ defmodule BookstoreWeb.BookController do
   def update(conn, %{"book" => book, "id" => id}) do
     old_book = Store.get_book(id)
     book = Store.Book.book_changeset(old_book, book)
-    IO.inspect(book)
 
     case Store.update_book(book) do
       {:ok, book} ->

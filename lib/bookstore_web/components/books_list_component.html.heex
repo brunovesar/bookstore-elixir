@@ -1,5 +1,5 @@
 <div>
-  <ul id="books" phx-update="stream" phx-viewport-bottom="load-more">
+  <ul>
     <li class="header" id="book_list_header">
       <p class="book_list_header">
         Cover
@@ -7,34 +7,61 @@
       <p class="book_list_header">
         Title
       </p>
+      <.button class="order" phx-click="order-change" phx-value-id="title-asc">
+        ▲
+      </.button>
+      <.button class="order" phx-click="order-change" phx-value-id="title-desc">
+        ▼
+      </.button>
+      <p class="book_list_header">
+        Publish Date
+      </p>
+      <.button class="order" phx-click="order-change" phx-value-id="date-asc">
+        ▲
+      </.button>
+      <.button class="order" phx-click="order-change" phx-value-id="date-desc">
+        ▼
+      </.button>
       <p class="book_list_header">
         Author
       </p>
-      <p class="book_list_header">
-        Category
-      </p>
+      <.simple_form for={@filter} phx-change="filter-change">
+        <.input
+          name="category_id"
+          type="select"
+          options={@categories}
+          label="Category"
+          value={@filter["category_id"]}
+        />
+      </.simple_form>
     </li>
-    <%= for item <- @items do %>
-      <li id={"item-#{item.isbn}"}>
-        <a href={~p"/books/#{item.isbn}"}>
-          <div class="book_list_content">
-            <img
-              class="book_list_image"
-              src={~p"/images/books/#{item.image}"}
-              alt="Image not found"
-            />
-            <p class="book_list_title">
-              <%= item.title %>
-            </p>
-            <p class="book_list_author">
-              <%= item.author.name %>
-            </p>
-            <p class="book_list_category">
-              <%= item.category.name %>
-            </p>
-          </div>
-        </a>
-      </li>
-    <% end %>
+  </ul>
+  <ul id="books" phx-update="stream" phx-viewport-bottom="load-more">
+    <%= if @streams.books == [] do %>
+      Test
+    <%= end %>
+    <li :for={{dom_id, item} <- @streams.books} id={dom_id}>
+      <a href={~p"/books/#{item.isbn}"}>
+        <div class="book_list_content">
+          <img
+            class="book_list_image"
+            src={~p"/images/books/#{item.image}"}
+            alt="Image not found"
+          />
+          <p class="book_list_title">
+            <%= item.title %>
+          </p>
+          <p class="book_list_date">
+            <%= item.publish_date %>
+          </p>
+          <p class="book_list_author">
+            <%= item.author.name %>
+          </p>
+          <p class="book_list_category">
+            <%= item.category.name %>
+          </p>
+        </div>
+      </a>
+    </li>
   </ul>
 </div>

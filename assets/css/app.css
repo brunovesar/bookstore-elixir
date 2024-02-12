@@ -20,6 +20,11 @@ img.logo {
 }
 
 /* Book List */
+button.order {
+    background: none;
+    color: black;
+}
+
 p.book_list_header {
     margin: 16px;
     font-size: 18px;
@@ -35,6 +40,9 @@ p.book_list_title {
     font-size: 18px;
 }
 p.book_list_author {
+    font-size: 18px;
+}
+p.book_list_date {
     font-size: 18px;
 }
 p.book_list_category {

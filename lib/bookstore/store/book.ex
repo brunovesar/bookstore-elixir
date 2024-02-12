@@ -17,7 +17,7 @@ defmodule Bookstore.Store.Book do
     timestamps(type: :utc_datetime)
   end
 
-  def book_changeset(book, attrs, opts \\ []) do
+  def book_changeset(book, attrs) do
     Changeset.cast(book, attrs, [
       :title,
       :publish_date,
