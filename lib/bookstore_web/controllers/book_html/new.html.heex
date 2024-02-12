@@ -1,9 +1,7 @@
 <div class="book_view">
-  <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image not found" />
-
   <div class="book_view_content">
-    <.simple_form :let={f} for={@changeset} action={~p"/books/#{@item.isbn}"}>
-      <.input field={f[:isbn]} type="hidden" value={@item.isbn} />
+    <.simple_form :let={f} for={@changeset} action={~p"/books/new"}>
+      <.input field={f[:isbn]} label="ISBN" required />
       <.input field={f[:title]} label="Title" required />
       <.input field={f[:author_id]} type="select" options={@authors} label="Author" required />
       <.input

@@ -21,8 +21,19 @@
     </p>
   </div>
   <%= if @current_user do %>
-    <.link href={~p"/books/#{@item.isbn}/edit"}>
-      edit
-    </.link>
+    <div class="book_view_actions">
+      <.link class="book_view_action" href={~p"/books/#{@item.isbn}/edit"}>
+        edit
+      </.link>
+
+      <.link
+        class="book_view_action"
+        href={~p"/books/#{@item.isbn}"}
+        method="delete"
+        data-confirm="Are you sure?"
+      >
+        delete
+      </.link>
+    </div>
   <% end %>
 </div>

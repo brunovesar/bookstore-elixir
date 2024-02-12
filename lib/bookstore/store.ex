@@ -40,6 +40,10 @@ defmodule Bookstore.Store do
     if result, do: if(result.category_ids, do: result.category_ids, else: []), else: []
   end
 
+  def delete_book(id) do
+    Repo.delete(%Book{isbn: id})
+  end
+
   def get_author(id), do: Repo.get(Author, id)
 
   def get_book(id) do
@@ -49,9 +53,9 @@ defmodule Bookstore.Store do
 
   def get_category(id), do: Repo.get(Category, id)
 
-  def insert_author(author = %Author{}), do: Repo.insert(author)
-  def insert_book(book = %Book{}), do: Repo.insert(book)
-  def insert_category(category = %Category{}), do: Repo.insert(category)
+  def insert_author(author), do: Repo.insert(author)
+  def insert_book(book), do: Repo.insert(book)
+  def insert_category(category), do: Repo.insert(category)
 
   def update_author(author = %Author{}), do: Repo.update(author)
   def update_book(book), do: Repo.update(book)

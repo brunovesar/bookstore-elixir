@@ -19,6 +19,7 @@ defmodule Bookstore.Store.Book do
 
   def book_changeset(book, attrs) do
     Changeset.cast(book, attrs, [
+      :isbn,
       :title,
       :publish_date,
       :price,

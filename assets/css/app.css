@@ -53,6 +53,21 @@ img.book_list_image {
 }
 
 /* Book View */
+div.book_view_actions {
+    margin: 32px;
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+}
+a.book_view_action {
+    background-color: black;
+    border-radius: 16px;
+    width: 100px;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    margin: 16px;
+}
 div.book_view {
     list-style: none;
     display: flex;

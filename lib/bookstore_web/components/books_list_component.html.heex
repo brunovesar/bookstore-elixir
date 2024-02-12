@@ -37,9 +37,6 @@
     </li>
   </ul>
   <ul id="books" phx-update="stream" phx-viewport-bottom="load-more">
-    <%= if @streams.books == [] do %>
-      Test
-    <%= end %>
     <li :for={{dom_id, item} <- @streams.books} id={dom_id}>
       <a href={~p"/books/#{item.isbn}"}>
         <div class="book_list_content">

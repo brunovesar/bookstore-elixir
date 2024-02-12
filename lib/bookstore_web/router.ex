@@ -19,6 +19,16 @@ defmodule BookstoreWeb.Router do
   end
 
   scope "/", BookstoreWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    get "/books/new", BookController, :new
+    post "/books/new", BookController, :create
+    get "/books/:id/edit", BookController, :edit
+    put "/books/:id", BookController, :update
+    delete "/books/:id", BookController, :delete
+  end
+
+  scope "/", BookstoreWeb do
     pipe_through :browser
 
     live "/", BooksLive
@@ -68,9 +78,6 @@ defmodule BookstoreWeb.Router do
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-
-    get "/books/:id/edit", BookController, :edit
-    put "/books/:id", BookController, :update
   end
 
   scope "/", BookstoreWeb do
