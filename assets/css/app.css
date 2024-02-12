@@ -37,13 +37,18 @@ div.book_list_content {
     height: 350px;
 }
 p.book_list_title {
-    font-size: 18px;
+    width: 200px;
+    font-size: 20px;
+    margin: 16px;
 }
 p.book_list_author {
+    width: 150px;
+    margin: 16px;
     font-size: 18px;
 }
 p.book_list_date {
     font-size: 18px;
+    width: 140px;
 }
 p.book_list_category {
     font-size: 18px;
