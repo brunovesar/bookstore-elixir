@@ -12,14 +12,14 @@ defmodule Bookstore.StoreTest do
     end
 
     test "returns all books if there are books" do
-      with {:ok, author} =
+      with {:ok, author} <-
              Store.insert_author(%Author{
                name: StoreFixtures.unique_name("Author"),
                birth_date: ~D[2000-01-01]
              }),
-           {:ok, category} =
+           {:ok, category} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
-           {:ok, book} =
+           {:ok, book} <-
              Store.insert_book(%Book{
                isbn: StoreFixtures.unique_name("ISBN"),
                title: StoreFixtures.unique_name("Book"),
@@ -36,14 +36,14 @@ defmodule Bookstore.StoreTest do
     end
 
     test "returns all books if there are many and a page of books if requested" do
-      with {:ok, author} =
+      with {:ok, author} <-
              Store.insert_author(%Author{
                name: StoreFixtures.unique_name("Author"),
                birth_date: ~D[2000-01-01]
              }),
-           {:ok, category} =
+           {:ok, category} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
-           {:ok, book1} =
+           {:ok, book1} <-
              Store.insert_book(%Book{
                isbn: StoreFixtures.unique_name("ISBN"),
                title: StoreFixtures.unique_name("Book"),
@@ -55,7 +55,7 @@ defmodule Bookstore.StoreTest do
                author_id: author.id,
                category_id: category.id
              }),
-           {:ok, book2} =
+           {:ok, book2} <-
              Store.insert_book(%Book{
                isbn: StoreFixtures.unique_name("ISBN"),
                title: StoreFixtures.unique_name("Book"),
@@ -67,7 +67,7 @@ defmodule Bookstore.StoreTest do
                author_id: author.id,
                category_id: category.id
              }),
-           {:ok, book3} =
+           {:ok, book3} <-
              Store.insert_book(%Book{
                isbn: StoreFixtures.unique_name("ISBN"),
                title: StoreFixtures.unique_name("Book"),
@@ -85,21 +85,21 @@ defmodule Bookstore.StoreTest do
     end
 
     test "returns the books filtered by the category descendants" do
-      with {:ok, author} =
+      with {:ok, author} <-
              Store.insert_author(%Author{
                name: StoreFixtures.unique_name("Author"),
                birth_date: ~D[2000-01-01]
              }),
-           {:ok, category1} =
+           {:ok, category1} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
-           {:ok, category2} =
+           {:ok, category2} <-
              Store.insert_category(%Category{
                name: StoreFixtures.unique_name("Category"),
                parent_id: category1.id
              }),
-           {:ok, category3} =
+           {:ok, category3} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
-           {:ok, book1} =
+           {:ok, book1} <-
              Store.insert_book(%Book{
                isbn: StoreFixtures.unique_name("ISBN"),
                title: StoreFixtures.unique_name("Book"),
@@ -111,7 +111,7 @@ defmodule Bookstore.StoreTest do
                author_id: author.id,
                category_id: category1.id
              }),
-           {:ok, book2} =
+           {:ok, book2} <-
              Store.insert_book(%Book{
                isbn: StoreFixtures.unique_name("ISBN"),
                title: StoreFixtures.unique_name("Book"),
@@ -123,7 +123,7 @@ defmodule Bookstore.StoreTest do
                author_id: author.id,
                category_id: category2.id
              }),
-           {:ok, _book3} =
+           {:ok, _book3} <-
              Store.insert_book(%Book{
                isbn: StoreFixtures.unique_name("ISBN"),
                title: StoreFixtures.unique_name("Book"),
@@ -146,47 +146,47 @@ defmodule Bookstore.StoreTest do
     end
 
     test "returns the category id if there is a single category" do
-      with {:ok, category} =
+      with {:ok, category} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
-           {:ok, _other_category} =
+           {:ok, _other_category} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}) do
         assert [category.id] == Store.get_categories_descendants_ids(category.id)
       end
     end
 
     test "returns the list of childs and no other categories" do
-      with {:ok, category1} =
+      with {:ok, category1} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
-           {:ok, category2} =
+           {:ok, category2} <-
              Store.insert_category(%Category{
                name: StoreFixtures.unique_name("Category"),
                parent_id: category1.id
              }),
-           {:ok, _category3} =
+           {:ok, _category3} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}) do
         assert [category1.id, category2.id] == Store.get_categories_descendants_ids(category1.id)
       end
     end
 
     test "returns the list of descendants and no other categories" do
-      with {:ok, category1} =
+      with {:ok, category1} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
-           {:ok, category2} =
+           {:ok, category2} <-
              Store.insert_category(%Category{
                name: StoreFixtures.unique_name("Category"),
                parent_id: category1.id
              }),
-           {:ok, category3} =
+           {:ok, category3} <-
              Store.insert_category(%Category{
                name: StoreFixtures.unique_name("Category"),
                parent_id: category1.id
              }),
-           {:ok, category4} =
+           {:ok, category4} <-
              Store.insert_category(%Category{
                name: StoreFixtures.unique_name("Category"),
                parent_id: category2.id
              }),
-           {:ok, _category5} =
+           {:ok, _category5} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}) do
         assert [category1.id, category2.id, category3.id, category4.id] ==
                  Store.get_categories_descendants_ids(category1.id)
@@ -194,24 +194,24 @@ defmodule Bookstore.StoreTest do
     end
 
     test "returns the list of descendants and no parents" do
-      with {:ok, category1} =
+      with {:ok, category1} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
-           {:ok, category2} =
+           {:ok, category2} <-
              Store.insert_category(%Category{
                name: StoreFixtures.unique_name("Category"),
                parent_id: category1.id
              }),
-           {:ok, _category3} =
+           {:ok, _category3} <-
              Store.insert_category(%Category{
                name: StoreFixtures.unique_name("Category"),
                parent_id: category1.id
              }),
-           {:ok, category4} =
+           {:ok, category4} <-
              Store.insert_category(%Category{
                name: StoreFixtures.unique_name("Category"),
                parent_id: category2.id
              }),
-           {:ok, _category5} =
+           {:ok, _category5} <-
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}) do
         assert [category2.id, category4.id] ==
                  Store.get_categories_descendants_ids(category2.id)

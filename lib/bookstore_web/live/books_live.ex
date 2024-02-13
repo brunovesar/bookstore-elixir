@@ -19,7 +19,6 @@ defmodule BookstoreWeb.BooksLive do
   defp fetch_categories(%{assigns: %{filter: filter}} = socket) do
     category = filter["category_id"]
     result = Store.all_categories_descendants(category)
-    IO.inspect(result)
     assign(socket, selected_categories: result)
   end
 

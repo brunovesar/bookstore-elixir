@@ -64,9 +64,9 @@ defmodule Bookstore.Store do
   def insert_book(book), do: Repo.insert(book)
   def insert_category(category), do: Repo.insert(category)
 
-  def update_author(author = %Author{}), do: Repo.update(author)
+  def update_author(author), do: Repo.update(author)
   def update_book(book), do: Repo.update(book)
-  def update_category(category = %Category{}), do: Repo.update(category)
+  def update_category(category), do: Repo.update(category)
 
   defp category_descendants_query(id, query \\ {"category_tree", Category}) do
     category_initial_query =
