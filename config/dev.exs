@@ -4,7 +4,7 @@ import Config
 config :bookstore, Bookstore.Repo,
   username: "postgres",
   password: "password",
-  hostname: "bookstore_db_1",
+  hostname: "db",
   database: "bookstore",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
