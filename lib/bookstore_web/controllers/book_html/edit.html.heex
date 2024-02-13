@@ -1,8 +1,11 @@
 <div class="book_view">
-  <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image not found" />
-
+  <%= if @item.image do %>
+    <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image path broken" />
+  <% else %> 
+    <img class="book_view_image" src={~p"/images/not_found.jpg"} alt="Image not found" />
+  <% end %>
   <div class="book_view_content">
-    <.simple_form :let={f} for={@changeset} action={~p"/books/#{@item.isbn}"}>
+    <.simple_form :let={f} for={@changeset} action={~p"/books/#{@item.isbn}"} multipart>
       <.input field={f[:isbn]} type="hidden" value={@item.isbn} />
       <.input field={f[:title]} label="Title" required />
       <.input field={f[:author_id]} type="select" options={@authors} label="Author" required />
@@ -17,7 +20,7 @@
       <.input field={f[:quantity]} type="number" label="Quantity" required />
       <.input field={f[:publish_date]} type="date" label="Publish date" required />
       <.input field={f[:editor]} label="Editor" required />
-      <.input field={f[:image]} label="Image path" required />
+      <.input field={f[:file]} type="file" label="Photo" />
       <:actions>
         <.button phx-disable-with="Saving..." class="w-full">Save</.button>
       </:actions>

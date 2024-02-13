@@ -34,10 +34,8 @@ defmodule Bookstore.Store do
   def all_categories_descendants(id) do
     query =
       category_descendants_query(id)
-      |> select([ct], %{category_ids: fragment("ARRAY_AGG(?)", ct.id)})
 
-    result = Repo.one(query)
-    if result, do: if(result.category_ids, do: result.category_ids, else: []), else: []
+    Repo.all(query)
   end
 
   def delete_book(id) do
@@ -52,6 +50,15 @@ defmodule Bookstore.Store do
   end
 
   def get_category(id), do: Repo.get(Category, id)
+
+  def get_categories_descendants_ids(id) do
+    query =
+      category_descendants_query(id)
+      |> select([ct], %{category_ids: fragment("ARRAY_AGG(?)", ct.id)})
+
+    result = Repo.one(query)
+    if result, do: if(result.category_ids, do: result.category_ids, else: []), else: []
+  end
 
   def insert_author(author), do: Repo.insert(author)
   def insert_book(book), do: Repo.insert(book)

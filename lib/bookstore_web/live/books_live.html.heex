@@ -1,9 +1,11 @@
-<div>
+<div class="books_list_container">
   <h1>Books</h1>
   <.live_component
     module={BookstoreWeb.BooksListComponent}
     categories={@categories}
     filter={@filter}
+    current_user={@current_user}
+    selected_categories={@selected_categories}
     streams={@streams}
     id="books_list"
   />

@@ -1,6 +1,7 @@
 defmodule BookstoreWeb.BooksLive do
   use BookstoreWeb, :live_view
   alias Bookstore.Store
+  on_mount {BookstoreWeb.UserAuth, :mount_current_user}
 
   def mount(_params, _session, socket) do
     {:ok,
@@ -11,10 +12,18 @@ defmodule BookstoreWeb.BooksLive do
          Store.all_categories() |> Enum.map(fn item -> [key: item.name, value: item.id] end),
        filter: %{"category_id" => 1}
      )
-     |> fetch()}
+     |> fetch_categories()
+     |> fetch_books()}
   end
 
-  defp fetch(
+  defp fetch_categories(%{assigns: %{filter: filter}} = socket) do
+    category = filter["category_id"]
+    result = Store.all_categories_descendants(category)
+    IO.inspect(result)
+    assign(socket, selected_categories: result)
+  end
+
+  defp fetch_books(
          %{assigns: %{page: page, per_page: per, filter: filter, order: order}} = socket,
          reset \\ false
        ) do
@@ -35,15 +44,18 @@ defmodule BookstoreWeb.BooksLive do
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, socket |> assign(page: assigns.page + 1) |> fetch()}
+    {:noreply, socket |> assign(page: assigns.page + 1) |> fetch_books()}
   end
 
   def handle_event("filter-change", params, socket) do
     {:noreply,
-     socket |> assign(filter: %{"category_id" => params["category_id"]}, page: 0) |> fetch(true)}
+     socket
+     |> assign(filter: %{"category_id" => params["category_id"]}, page: 0)
+     |> fetch_categories()
+     |> fetch_books(true)}
   end
 
   def handle_event("order-change", params, socket) do
-    {:noreply, socket |> assign(order: params["id"], page: 0) |> fetch(true)}
+    {:noreply, socket |> assign(order: params["id"], page: 0) |> fetch_books(true)}
   end
 end

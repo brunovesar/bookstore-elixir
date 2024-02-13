@@ -2,9 +2,6 @@
   <ul>
     <li class="header" id="book_list_header">
       <p class="book_list_header">
-        Cover
-      </p>
-      <p class="book_list_header">
         Title
       </p>
       <.button class="order" phx-click="order-change" phx-value-id="title-asc">
@@ -34,30 +31,54 @@
           value={@filter["category_id"]}
         />
       </.simple_form>
+      <p class="book_list_header_categories">
+        This includes books from the following categories:
+        <%= for item <- @selected_categories do %>
+          <%= item.name %>
+        <% end %>
+      </p>
     </li>
   </ul>
   <ul id="books" phx-update="stream" phx-viewport-bottom="load-more">
-    <li :for={{dom_id, item} <- @streams.books} id={dom_id}>
-      <a href={~p"/books/#{item.isbn}"}>
-        <div class="book_list_content">
-          <img
-            class="book_list_image"
-            src={~p"/images/books/#{item.image}"}
-            alt="Image not found"
-          />
-          <p class="book_list_title">
-            <%= item.title %>
-          </p>
-          <p class="book_list_date">
-            <%= item.publish_date %>
-          </p>
-          <p class="book_list_author">
-            <%= item.author.name %>
-          </p>
-          <p class="book_list_category">
-            <%= item.category.name %>
-          </p>
+    <li :for={{dom_id, item} <- @streams.books} class="book_list_item" id={dom_id}>
+      <a class="book_list_item" href={~p"/books/#{item.isbn}"}>
+        <div class="book_list_item">
+          <%= if item.image do %>
+            <img class="book_list_image" src={~p"/images/books/#{item.image}"} alt="Image path broken" />
+          <% else %>
+            <img class="book_list_image" src={~p"/images/not_found.jpg"} alt="Image not found" />
+          <% end %>
+          <div class="book_list_content">
+            <p class="book_list_title">
+              <%= item.title %>
+            </p>
+            <p class="book_list_date">
+              <%= item.publish_date %>
+            </p>
+            <p class="book_list_author">
+              <%= item.author.name %>
+            </p>
+            <p class="book_list_category">
+              <%= item.category.name %>
+            </p>
+          </div>
         </div>
+        <%= if @current_user do %>
+          <div class="book_actions">
+            <.link class="book_action" href={~p"/books/#{item.isbn}/edit"}>
+              edit
+            </.link>
+
+            <.link
+              class="book_action"
+              href={~p"/books/#{item.isbn}"}
+              method="delete"
+              data-confirm="Are you sure?"
+            >
+              delete
+            </.link>
+          </div>
+        <% end %>
       </a>
     </li>
   </ul>

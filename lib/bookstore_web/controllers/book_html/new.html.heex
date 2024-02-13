@@ -1,6 +1,6 @@
 <div class="book_view">
   <div class="book_view_content">
-    <.simple_form :let={f} for={@changeset} action={~p"/books/new"}>
+    <.simple_form :let={f} for={@changeset} action={~p"/books/new"} multipart>
       <.input field={f[:isbn]} label="ISBN" required />
       <.input field={f[:title]} label="Title" required />
       <.input field={f[:author_id]} type="select" options={@authors} label="Author" required />
@@ -15,7 +15,7 @@
       <.input field={f[:quantity]} type="number" label="Quantity" required />
       <.input field={f[:publish_date]} type="date" label="Publish date" required />
       <.input field={f[:editor]} label="Editor" required />
-      <.input field={f[:image]} label="Image path" required />
+      <.input field={f[:file]} type="file" label="Photo" />
       <:actions>
         <.button phx-disable-with="Saving..." class="w-full">Save</.button>
       </:actions>

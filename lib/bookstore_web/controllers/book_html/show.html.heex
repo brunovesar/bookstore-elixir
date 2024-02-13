@@ -1,5 +1,9 @@
 <div class="book_view">
-  <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image not found" />
+  <%= if @item.image do %>
+    <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image path broken" />
+  <% else %>
+    <img class="book_view_image" src={~p"/images/not_found.jpg"} alt="Image not found" />
+  <% end %>
   <div class="book_view_content">
     <p class="book_view_title">
       Title: <%= @item.title %>
@@ -21,13 +25,13 @@
     </p>
   </div>
   <%= if @current_user do %>
-    <div class="book_view_actions">
-      <.link class="book_view_action" href={~p"/books/#{@item.isbn}/edit"}>
+    <div class="book_actions">
+      <.link class="book_action" href={~p"/books/#{@item.isbn}/edit"}>
         edit
       </.link>
 
       <.link
-        class="book_view_action"
+        class="book_action"
         href={~p"/books/#{@item.isbn}"}
         method="delete"
         data-confirm="Are you sure?"

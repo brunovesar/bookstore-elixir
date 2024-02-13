@@ -140,9 +140,9 @@ defmodule Bookstore.StoreTest do
     end
   end
 
-  describe "all_categories_descendants/1" do
+  describe "get_categories_descendants_ids/1" do
     test "returns empty if there is no categories" do
-      assert [] == Store.all_categories_descendants(1)
+      assert [] == Store.get_categories_descendants_ids(1)
     end
 
     test "returns the category id if there is a single category" do
@@ -150,7 +150,7 @@ defmodule Bookstore.StoreTest do
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
            {:ok, _other_category} =
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}) do
-        assert [category.id] == Store.all_categories_descendants(category.id)
+        assert [category.id] == Store.get_categories_descendants_ids(category.id)
       end
     end
 
@@ -164,7 +164,7 @@ defmodule Bookstore.StoreTest do
              }),
            {:ok, _category3} =
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}) do
-        assert [category1.id, category2.id] == Store.all_categories_descendants(category1.id)
+        assert [category1.id, category2.id] == Store.get_categories_descendants_ids(category1.id)
       end
     end
 
@@ -189,7 +189,7 @@ defmodule Bookstore.StoreTest do
            {:ok, _category5} =
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}) do
         assert [category1.id, category2.id, category3.id, category4.id] ==
-                 Store.all_categories_descendants(category1.id)
+                 Store.get_categories_descendants_ids(category1.id)
       end
     end
 
@@ -214,7 +214,7 @@ defmodule Bookstore.StoreTest do
            {:ok, _category5} =
              Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}) do
         assert [category2.id, category4.id] ==
-                 Store.all_categories_descendants(category2.id)
+                 Store.get_categories_descendants_ids(category2.id)
       end
     end
   end

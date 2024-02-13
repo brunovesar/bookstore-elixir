@@ -1,6 +1,6 @@
 defmodule Bookstore.Store.Book do
   use Ecto.Schema
-  alias Ecto.Changeset
+  import Ecto.Changeset
 
   @primary_key {:isbn, :string, []}
   schema "books" do
@@ -9,7 +9,7 @@ defmodule Bookstore.Store.Book do
     field :price, :float
     field :quantity, :integer
     field :editor, :string
-    field :image, :binary
+    field :image, :string
 
     belongs_to :category, Bookstore.Store.Category
     belongs_to :author, Bookstore.Store.Author
@@ -17,8 +17,8 @@ defmodule Bookstore.Store.Book do
     timestamps(type: :utc_datetime)
   end
 
-  def book_changeset(book, attrs) do
-    Changeset.cast(book, attrs, [
+  def book_changeset(book, attrs, opts \\ []) do
+    Ecto.Changeset.cast(book, attrs, [
       :isbn,
       :title,
       :publish_date,
@@ -30,7 +30,19 @@ defmodule Bookstore.Store.Book do
       :category_id
     ])
     |> case do
-      %{changes: _} = changeset -> changeset
+      %{changes: _} = changeset ->
+        changeset
+        |> maybe_validate_unique_isbn(opts)
+    end
+  end
+
+  defp maybe_validate_unique_isbn(changeset, opts) do
+    if Keyword.get(opts, :validate_isbn, true) do
+      changeset
+      |> unsafe_validate_unique(:isbn, Bookstore.Repo)
+      |> unique_constraint(:isbn)
+    else
+      changeset
     end
   end
 end
