@@ -44,7 +44,11 @@
       <a class="book_list_item" href={~p"/books/#{item.isbn}"}>
         <div class="book_list_item">
           <%= if item.image do %>
-            <img class="book_list_image" src={~p"/images/books/#{item.image}"} alt="Image path broken" />
+            <img
+              class="book_list_image"
+              src={~p"/images/books/#{item.image}"}
+              alt="Image path broken"
+            />
           <% else %>
             <img class="book_list_image" src={~p"/images/not_found.jpg"} alt="Image not found" />
           <% end %>

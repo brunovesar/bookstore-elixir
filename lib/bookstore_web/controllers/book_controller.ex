@@ -17,7 +17,7 @@ defmodule BookstoreWeb.BookController do
 
       {:error, changeset} ->
         conn
-        |> put_flash(:error, "ISBN is already in the system, can't create book.")
+        |> put_flash(:error, "Can't create book, check for errors in the form.")
         |> new(changeset)
     end
   end
@@ -66,13 +66,18 @@ defmodule BookstoreWeb.BookController do
 
   def show(conn, %{"id" => id}) do
     book = Store.get_book(id)
-    render(conn, :show, item: book)
+
+    if book do
+      render(conn, :show, item: book)
+    else
+      redirect(conn, to: ~p"/books/")
+    end
   end
 
   def update(conn, %{"book" => changes, "id" => id}) do
     old_book = Store.get_book(id)
     changes = save_file_from_changes(changes)
-    book = Store.Book.book_changeset(old_book, changes, validate_isbn: false)
+    book = Store.Book.book_changeset(old_book, changes, validate_isbn: false, format_isbn: false)
 
     case Store.update_book(book) do
       {:ok, book} ->

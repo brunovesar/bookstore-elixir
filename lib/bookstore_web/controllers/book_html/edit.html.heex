@@ -1,7 +1,7 @@
 <div class="book_view">
   <%= if @item.image do %>
     <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image path broken" />
-  <% else %> 
+  <% else %>
     <img class="book_view_image" src={~p"/images/not_found.jpg"} alt="Image not found" />
   <% end %>
   <div class="book_view_content">

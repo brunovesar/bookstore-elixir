@@ -50,7 +50,7 @@ trips =
 
 books_to_insert = [
   %Bookstore.Store.Book{
-    isbn: "0000-0001",
+    isbn: "ISBN-978-1505377439",
     title: "Prince of thieves",
     publish_date: ~D[1830-08-28],
     price: 25.0,
@@ -61,7 +61,7 @@ books_to_insert = [
     category_id: fiction.id
   },
   %Bookstore.Store.Book{
-    isbn: "0000-0002",
+    isbn: "ISBN-978-0140449266",
     title: "The count of Montecristo",
     publish_date: ~D[1832-08-28],
     price: 25.0,
@@ -72,7 +72,7 @@ books_to_insert = [
     category_id: fiction.id
   },
   %Bookstore.Store.Book{
-    isbn: "0001-0003",
+    isbn: "ISBN-978-0544003415",
     title: "The fellowship of the ring",
     publish_date: ~D[1954-04-12],
     price: 25.0,
@@ -83,7 +83,7 @@ books_to_insert = [
     category_id: fantastic.id
   },
   %Bookstore.Store.Book{
-    isbn: "0001-0004",
+    isbn: "ISBN-978-0008567132",
     title: "The two towers",
     publish_date: ~D[1954-08-12],
     price: 25.0,
@@ -94,7 +94,7 @@ books_to_insert = [
     category_id: fantastic.id
   },
   %Bookstore.Store.Book{
-    isbn: "0001-0005",
+    isbn: "ISBN-978-0261103597",
     title: "The return of the king",
     publish_date: ~D[1955-02-12],
     price: 25.0,
@@ -105,7 +105,7 @@ books_to_insert = [
     category_id: fantastic.id
   },
   %Bookstore.Store.Book{
-    isbn: "0002-0006",
+    isbn: "ISBN-978-1416561460",
     title: "Journey to the center of the earth",
     publish_date: ~D[1849-04-12],
     price: 25.0,
@@ -116,7 +116,7 @@ books_to_insert = [
     category_id: trips.id
   },
   %Bookstore.Store.Book{
-    isbn: "0002-0007",
+    isbn: "ISBN-978-0198818649",
     title: "20000 Leagues under the sea",
     publish_date: ~D[1851-04-12],
     price: 25.0,
@@ -127,7 +127,7 @@ books_to_insert = [
     category_id: trips.id
   },
   %Bookstore.Store.Book{
-    isbn: "0002-0008",
+    isbn: "ISBN-978-0230026742",
     title: "Around the world in eighty days",
     publish_date: ~D[1852-08-28],
     price: 25.0,
