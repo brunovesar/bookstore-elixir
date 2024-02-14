@@ -138,6 +138,119 @@ defmodule Bookstore.StoreTest do
         assert [book1, book2] == Store.all_books(category_id: category1.id)
       end
     end
+
+    test "returns the books filtered by search" do
+      with {:ok, author} <-
+             Store.insert_author(%Author{
+               name: StoreFixtures.unique_name("Author Find"),
+               birth_date: ~D[2000-01-01]
+             }),
+           {:ok, other_author} <-
+             Store.insert_author(%Author{
+               name: StoreFixtures.unique_name("Author"),
+               birth_date: ~D[2000-01-01]
+             }),
+           {:ok, category} <-
+             Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
+           {:ok, book1} <-
+             Store.insert_book(%Book{
+               isbn: StoreFixtures.unique_name("ISBN"),
+               title: StoreFixtures.unique_name("Book"),
+               publish_date: ~D[2020-01-01],
+               price: 10.0,
+               quantity: 10,
+               editor: StoreFixtures.unique_name("Editor"),
+               image: "path/to/file",
+               author_id: author.id,
+               category_id: category.id
+             }),
+           {:ok, book2} <-
+             Store.insert_book(%Book{
+               isbn: StoreFixtures.unique_name("ISBN"),
+               title: StoreFixtures.unique_name("Book Find"),
+               publish_date: ~D[2020-01-01],
+               price: 10.0,
+               quantity: 10,
+               editor: StoreFixtures.unique_name("Editor"),
+               image: "path/to/file",
+               author_id: other_author.id,
+               category_id: category.id
+             }),
+           {:ok, _book3} <-
+             Store.insert_book(%Book{
+               isbn: StoreFixtures.unique_name("ISBN"),
+               title: StoreFixtures.unique_name("Book"),
+               publish_date: ~D[2020-01-01],
+               price: 10.0,
+               quantity: 10,
+               editor: StoreFixtures.unique_name("Editor"),
+               image: "path/to/file",
+               author_id: other_author.id,
+               category_id: category.id
+             }) do
+        assert [book1, book2] == Store.all_books(search: "Find")
+      end
+    end
+
+    test "returns the books filtered by search and category" do
+      with {:ok, author} <-
+             Store.insert_author(%Author{
+               name: StoreFixtures.unique_name("Author Find"),
+               birth_date: ~D[2000-01-01]
+             }),
+           {:ok, other_author} <-
+             Store.insert_author(%Author{
+               name: StoreFixtures.unique_name("Author"),
+               birth_date: ~D[2000-01-01]
+             }),
+           {:ok, category1} <-
+             Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
+           {:ok, category2} <-
+             Store.insert_category(%Category{
+               name: StoreFixtures.unique_name("Category"),
+               parent_id: category1.id
+             }),
+           {:ok, category3} <-
+             Store.insert_category(%Category{name: StoreFixtures.unique_name("Category")}),
+           {:ok, _book1} <-
+             Store.insert_book(%Book{
+               isbn: StoreFixtures.unique_name("ISBN"),
+               title: StoreFixtures.unique_name("Book"),
+               publish_date: ~D[2020-01-01],
+               price: 10.0,
+               quantity: 10,
+               editor: StoreFixtures.unique_name("Editor"),
+               image: "path/to/file",
+               author_id: author.id,
+               category_id: category1.id
+             }),
+           {:ok, book2} <-
+             Store.insert_book(%Book{
+               isbn: StoreFixtures.unique_name("ISBN"),
+               title: StoreFixtures.unique_name("Book Find"),
+               publish_date: ~D[2020-01-01],
+               price: 10.0,
+               quantity: 10,
+               editor: StoreFixtures.unique_name("Editor"),
+               image: "path/to/file",
+               author_id: other_author.id,
+               category_id: category2.id
+             }),
+           {:ok, _book3} <-
+             Store.insert_book(%Book{
+               isbn: StoreFixtures.unique_name("ISBN"),
+               title: StoreFixtures.unique_name("Book"),
+               publish_date: ~D[2020-01-01],
+               price: 10.0,
+               quantity: 10,
+               editor: StoreFixtures.unique_name("Editor"),
+               image: "path/to/file",
+               author_id: other_author.id,
+               category_id: category3.id
+             }) do
+        assert [book2] == Store.all_books(search: "Find", category_id: category2.id)
+      end
+    end
   end
 
   describe "get_categories_descendants_ids/1" do

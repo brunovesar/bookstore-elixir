@@ -6,7 +6,7 @@
 li.header {
     list-style: none;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 
@@ -42,7 +42,14 @@ button.order {
     background: none;
     color: black;
 }
-
+button.order_disabled {
+    background: none;
+    color: gray;
+}
+div.book_list_order {
+    display: flex;
+    width: 240px;
+}
 p.book_list_header {
     margin: 16px;
     font-size: 18px;

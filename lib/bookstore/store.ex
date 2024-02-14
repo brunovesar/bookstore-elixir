@@ -8,20 +8,31 @@ defmodule Bookstore.Store do
 
   def all_books(filter \\ [], order \\ [desc: :isbn], page_info \\ [0, 10], preload \\ []) do
     [offset, limit] = page_info
+    query = Book
+    category_id = filter[:category_id]
 
     query =
-      if filter[:category_id] do
-        category_descendants_query(filter[:category_id], Book)
+      if category_id do
+        query_category_descendants(category_id, query)
         |> join(:left, [b], c in "category_tree", on: c.id == b.category_id)
         |> where([b, c], not is_nil(c.id))
         |> select([b], b)
       else
-        Book
+        query
+      end
+
+    search = filter[:search]
+
+    query =
+      if not is_nil(search) and String.length(search) >= 3 do
+        query_search_and_order(search, query)
+      else
+        query
+        |> order_by(^order)
       end
 
     query =
       query
-      |> order_by(^order)
       |> limit(^limit)
       |> offset(^offset)
       |> preload(^preload)
@@ -33,7 +44,7 @@ defmodule Bookstore.Store do
 
   def all_categories_descendants(id) do
     query =
-      category_descendants_query(id)
+      query_category_descendants(id)
 
     Repo.all(query)
   end
@@ -53,7 +64,7 @@ defmodule Bookstore.Store do
 
   def get_categories_descendants_ids(id) do
     query =
-      category_descendants_query(id)
+      query_category_descendants(id)
       |> select([ct], %{category_ids: fragment("ARRAY_AGG(?)", ct.id)})
 
     result = Repo.one(query)
@@ -64,11 +75,7 @@ defmodule Bookstore.Store do
   def insert_book(book), do: Repo.insert(book)
   def insert_category(category), do: Repo.insert(category)
 
-  def update_author(author), do: Repo.update(author)
-  def update_book(book), do: Repo.update(book)
-  def update_category(category), do: Repo.update(category)
-
-  defp category_descendants_query(id, query \\ {"category_tree", Category}) do
+  defp query_category_descendants(id, query \\ {"category_tree", Category}) do
     category_initial_query =
       Category
       |> where(id: ^id)
@@ -85,4 +92,28 @@ defmodule Bookstore.Store do
     |> recursive_ctes(true)
     |> with_cte("category_tree", as: ^category_tree_query)
   end
+
+  defp query_search_and_order(search, query) do
+    query
+    |> join(:left, [b], sb in "search_books", on: sb.book_id == b.id)
+    |> where(
+      fragment(
+        "searchable @@ to_tsquery(websearch_to_tsquery(?)::text || ':*')",
+        ^search
+      )
+    )
+    |> order_by([
+      {
+        :asc,
+        fragment(
+          "ts_rank_cd(searchable, to_tsquery(websearch_to_tsquery(?)::text || ':*'), 4)",
+          ^search
+        )
+      }
+    ])
+  end
+
+  def update_author(author), do: Repo.update(author)
+  def update_book(book), do: Repo.update(book)
+  def update_category(category), do: Repo.update(category)
 end

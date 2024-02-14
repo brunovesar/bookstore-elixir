@@ -17,6 +17,7 @@ defmodule Bookstore.Repo.Migrations.CreateStoreTables do
     create table(:books) do
       add :isbn, :string, primary_key: true
       add :title, :string, null: false
+      add :summary, :string
       add :price, :float
       add :quantity, :integer
       add :editor, :string

@@ -1,28 +1,14 @@
 <div>
   <ul>
-    <li class="header" id="book_list_header">
-      <p class="book_list_header">
-        Title
-      </p>
-      <.button class="order" phx-click="order-change" phx-value-id="title-asc">
-        ▲
-      </.button>
-      <.button class="order" phx-click="order-change" phx-value-id="title-desc">
-        ▼
-      </.button>
-      <p class="book_list_header">
-        Publish Date
-      </p>
-      <.button class="order" phx-click="order-change" phx-value-id="date-asc">
-        ▲
-      </.button>
-      <.button class="order" phx-click="order-change" phx-value-id="date-desc">
-        ▼
-      </.button>
-      <p class="book_list_header">
-        Author
-      </p>
-      <.simple_form for={@filter} phx-change="filter-change">
+    <.simple_form for={@filter} phx-change="filter-change">
+      <li class="header" id="book_list_header">
+        <.input
+          type="search"
+          name="search"
+          label="Search"
+          value={@filter["search"]}
+          placeholder="Type 3 or more letters to start searching..."
+        />
         <.input
           name="category_id"
           type="select"
@@ -30,14 +16,66 @@
           label="Category"
           value={@filter["category_id"]}
         />
-      </.simple_form>
-      <p class="book_list_header_categories">
-        This includes books from the following categories:
-        <%= for item <- @selected_categories do %>
-          <%= item.name %>
-        <% end %>
-      </p>
-    </li>
+        <div class="book_list_order">
+          <p class="book_list_header">
+            Title
+          </p>
+          <%= if @filter["search"] do %>
+          <% else %>
+            <.button
+              type="button"
+              class={if @order == "title-asc", do: "order_disabled", else: "order"}
+              phx-click="order-change"
+              phx-value-id="title-asc"
+              disabled={@order == "title-asc"}
+            >
+              ▲
+            </.button>
+            <.button
+              type="button"
+              class={if @order == "title-desc", do: "order_disabled", else: "order"}
+              phx-click="order-change"
+              phx-value-id="title-desc"
+              disabled={@order == "title-desc"}
+            >
+              ▼
+            </.button>
+          <% end %>
+        </div>
+        <div class="book_list_order">
+          <p class="book_list_header">
+            Publish Date
+          </p>
+          <%= if @filter["search"] do %>
+          <% else %>
+            <.button
+              type="button"
+              class={if @order == "date-asc", do: "order_disabled", else: "order"}
+              phx-click="order-change"
+              phx-value-id="date-asc"
+              disabled={@order == "date-asc"}
+            >
+              ▲
+            </.button>
+            <.button
+              type="button"
+              class={if @order == "date-desc", do: "order_disabled", else: "order"}
+              phx-click="order-change"
+              phx-value-id="date-desc"
+              disabled={@order == "date-desc"}
+            >
+              ▼
+            </.button>
+          <% end %>
+        </div>
+        <p class="book_list_header_categories">
+          This includes books from the following categories:
+          <%= for item <- @selected_categories do %>
+            <%= item.name %>
+          <% end %>
+        </p>
+      </li>
+    </.simple_form>
   </ul>
   <ul id="books" phx-update="stream" phx-viewport-bottom="load-more">
     <li :for={{dom_id, item} <- @streams.books} class="book_list_item" id={dom_id}>

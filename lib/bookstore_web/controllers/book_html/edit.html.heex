@@ -8,6 +8,7 @@
     <.simple_form :let={f} for={@changeset} action={~p"/books/#{@item.isbn}"} multipart>
       <.input field={f[:isbn]} type="hidden" value={@item.isbn} />
       <.input field={f[:title]} label="Title" required />
+      <.input field={f[:summary]} label="Summary" />
       <.input field={f[:author_id]} type="select" options={@authors} label="Author" required />
       <.input
         field={f[:category_id]}

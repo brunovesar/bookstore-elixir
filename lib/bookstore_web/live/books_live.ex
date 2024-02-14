@@ -6,7 +6,7 @@ defmodule BookstoreWeb.BooksLive do
   def mount(_params, _session, socket) do
     {:ok,
      stream_configure(socket, :books, dom_id: &"books-#{&1.isbn}")
-     |> assign(page: 0, per_page: 3, order: [:desc, :title])
+     |> assign(page: 0, per_page: 3, order: "title-asc")
      |> assign(
        categories:
          Store.all_categories() |> Enum.map(fn item -> [key: item.name, value: item.id] end),
@@ -47,9 +47,17 @@ defmodule BookstoreWeb.BooksLive do
   end
 
   def handle_event("filter-change", params, socket) do
+    category_id = params["category_id"]
+    search = params["search"]
+    search = if not is_nil(search) and String.length(search) >= 3, do: search, else: nil
+    search = if not is_nil(search) and String.length(search) >= 3, do: search, else: nil
+
     {:noreply,
      socket
-     |> assign(filter: %{"category_id" => params["category_id"]}, page: 0)
+     |> assign(
+       filter: %{"category_id" => category_id, "search" => search},
+       page: 0
+     )
      |> fetch_categories()
      |> fetch_books(true)}
   end

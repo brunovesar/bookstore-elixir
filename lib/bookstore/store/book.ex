@@ -5,6 +5,7 @@ defmodule Bookstore.Store.Book do
   @primary_key {:isbn, :string, []}
   schema "books" do
     field :title, :string
+    field :summary, :string
     field :publish_date, :date
     field :price, :float
     field :quantity, :integer
@@ -21,6 +22,7 @@ defmodule Bookstore.Store.Book do
     Ecto.Changeset.cast(book, attrs, [
       :isbn,
       :title,
+      :summary,
       :publish_date,
       :price,
       :quantity,
