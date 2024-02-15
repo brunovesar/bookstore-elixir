@@ -19,6 +19,8 @@ defmodule BookstoreWeb.UserRegistrationController do
             &url(~p"/users/confirm/#{&1}")
           )
 
+        Accounts.generate_user_header_token(user)
+
         conn
         |> put_flash(:info, "User created successfully.")
         |> UserAuth.log_in_user(user)

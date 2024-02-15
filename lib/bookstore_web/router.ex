@@ -18,6 +18,25 @@ defmodule BookstoreWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :graphql do
+    plug :accepts, ["json"]
+    plug BookstoreWeb.Context
+  end
+
+  scope "/" do
+    pipe_through :graphql
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: BookstoreWeb.Schema
+  end
+
+  scope "/" do
+    pipe_through [:graphql, :require_authenticated_api_user]
+
+    forward "/graphql", Absinthe.Plug,
+      schema: BookstoreWeb.Schema,
+      interface: :simple,
+      context: %{pubsub: BookstoreWeb.Endpoint}
+  end
+
   scope "/", BookstoreWeb do
     pipe_through [:browser, :require_authenticated_user]
 
@@ -30,6 +49,11 @@ defmodule BookstoreWeb.Router do
 
   scope "/", BookstoreWeb do
     pipe_through :browser
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: BookstoreWeb.Schema,
+      interface: :simple,
+      context: %{pubsub: BookstoreWeb.Endpoint}
 
     live "/", BooksLive
     live "/books", BooksLive

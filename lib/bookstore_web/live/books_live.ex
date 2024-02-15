@@ -26,14 +26,7 @@ defmodule BookstoreWeb.BooksLive do
          %{assigns: %{page: page, per_page: per, filter: filter, order: order}} = socket,
          reset \\ false
        ) do
-    order_by =
-      case order do
-        "date-asc" -> [asc: :publish_date]
-        "date-desc" -> [desc: :publish_date]
-        "title-asc" -> [asc: :title]
-        "title-desc" -> [desc: :title]
-        _ -> [asc: :title]
-      end
+    order_by = Store.order_from_string(order)
 
     offset = if reset, do: 0, else: page * per
     list_filter = Enum.map(filter, fn {key, value} -> {String.to_existing_atom(key), value} end)

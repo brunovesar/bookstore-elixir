@@ -1,13 +1,15 @@
 # Bookstore
 
 To start your Phoenix server:
-
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+  * Run `docker-compose up`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+To interact through the graphql api
+  * You'll need a user token, register or log in and go to settings to get your token
+  * You can visit [`localhost:4000/graphiql`](http://localhost:4000/graphiql) and point to the graphql entry point: `localhost:4000/graphiql`
+  * Make sure you send the `Authorization` header with the value `Bearer {token}`
+Now you can query authors, categories and books and also mutate authors and categories
 
 ## Learn more
 

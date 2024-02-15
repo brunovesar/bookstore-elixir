@@ -7,6 +7,11 @@ defmodule BookstoreWeb.UserSettingsController do
   plug :assign_email_and_password_changesets
 
   def edit(conn, _params) do
+    user = conn.assigns.current_user
+    token = Accounts.get_header_token_by_user(user)
+
+    user_token = Base.url_encode64(token.token)
+    conn = assign(conn, :user_auth_token, user_token)
     render(conn, :edit)
   end
 

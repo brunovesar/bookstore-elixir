@@ -10,4 +10,16 @@ defmodule Bookstore.Store.Category do
 
     timestamps(type: :utc_datetime)
   end
+
+  def category_changeset(category, attrs, _opts \\ []) do
+    Ecto.Changeset.cast(category, attrs, [
+      :id,
+      :name,
+      :parent_id
+    ])
+    |> case do
+      %{changes: _} = changeset ->
+        changeset
+    end
+  end
 end

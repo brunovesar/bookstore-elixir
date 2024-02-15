@@ -64,6 +64,21 @@ defmodule Bookstore.Accounts.UserToken do
     {:ok, query}
   end
 
+  def build_header_token(user) do
+    token = :crypto.strong_rand_bytes(@rand_size)
+    {token, %UserToken{token: token, context: "header", user_id: user.id}}
+  end
+
+  def verify_header_token_query(token) do
+    query =
+      from token in by_token_and_context_query(token, "header"),
+        join: user in assoc(token, :user),
+        where: token.inserted_at > ago(@session_validity_in_days, "day"),
+        select: user
+
+    {:ok, query}
+  end
+
   @doc """
   Builds a token and its hash to be delivered to the user's email.
 

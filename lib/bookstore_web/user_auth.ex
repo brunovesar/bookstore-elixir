@@ -88,10 +88,19 @@ defmodule BookstoreWeb.UserAuth do
   Authenticates the user by looking into the session
   and remember me token.
   """
-  def fetch_current_user(conn, _opts) do
-    {user_token, conn} = ensure_user_token(conn)
-    user = user_token && Accounts.get_user_by_session_token(user_token)
-    assign(conn, :current_user, user)
+  def fetch_current_user(conn, opts \\ []) do
+    use_auth_header? = Keyword.get(opts, :use_auth_header, false)
+
+    if use_auth_header? do
+      user_token = get_user_token_from_header(conn)
+      user = user_token && Accounts.get_user_by_header_token(user_token)
+      assign(conn, :current_user, user)
+    else
+      ensure_user_token(conn)
+      {user_token, conn} = ensure_user_token(conn)
+      user = user_token && Accounts.get_user_by_session_token(user_token)
+      assign(conn, :current_user, user)
+    end
   end
 
   defp ensure_user_token(conn) do
@@ -105,6 +114,17 @@ defmodule BookstoreWeb.UserAuth do
       else
         {nil, conn}
       end
+    end
+  end
+
+  defp get_user_token_from_header(conn) do
+    header = get_req_header(conn, "authorization")
+
+    if length(header) > 0 do
+      ["Bearer " <> token] = get_req_header(conn, "authorization")
+      token
+    else
+      nil
     end
   end
 
@@ -208,6 +228,14 @@ defmodule BookstoreWeb.UserAuth do
       |> maybe_store_return_to()
       |> redirect(to: ~p"/users/log_in")
       |> halt()
+    end
+  end
+
+  def require_authenticated_api_user(conn, _opts) do
+    if conn.assigns[:current_user] do
+      conn
+    else
+      conn |> send_resp(200, JSON.encode!(data: nil, errors: "Not authenticated user"))
     end
   end
 

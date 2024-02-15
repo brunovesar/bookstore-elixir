@@ -226,12 +226,32 @@ defmodule Bookstore.Accounts do
     token
   end
 
+  def generate_user_header_token(user) do
+    {token, user_token} = UserToken.build_header_token(user)
+    Repo.insert!(user_token)
+    token
+  end
+
+  def get_header_token_by_user(user) do
+    query = UserToken.by_user_and_contexts_query(user, ["header"])
+    Repo.one(query)
+  end
+
   @doc """
   Gets the user with the given signed token.
   """
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
     Repo.one(query)
+  end
+
+  def get_user_by_header_token(token) do
+    with {:ok, token_decoded} <- Base.url_decode64(token),
+         {:ok, query} <- UserToken.verify_header_token_query(token_decoded) do
+      Repo.one(query)
+    else
+      _ -> nil
+    end
   end
 
   @doc """

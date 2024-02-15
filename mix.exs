@@ -59,6 +59,9 @@ defmodule Bookstore.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
+      {:absinthe, "~> 1.6"},
+      {:absinthe_plug, "~> 1.5"},
+      {:json, "~> 1.4"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4"}
     ]

@@ -49,8 +49,16 @@ defmodule Bookstore.Store do
     Repo.all(query)
   end
 
+  def delete_author(id) do
+    Repo.delete(%Author{id: id})
+  end
+
   def delete_book(id) do
     Repo.delete(%Book{isbn: id})
+  end
+
+  def delete_category(id) do
+    Repo.delete(%Category{id: id})
   end
 
   def get_author(id), do: Repo.get(Author, id)
@@ -74,6 +82,16 @@ defmodule Bookstore.Store do
   def insert_author(author), do: Repo.insert(author)
   def insert_book(book), do: Repo.insert(book)
   def insert_category(category), do: Repo.insert(category)
+
+  def order_from_string(order) do
+    case order do
+      "date-asc" -> [asc: :publish_date]
+      "date-desc" -> [desc: :publish_date]
+      "title-asc" -> [asc: :title]
+      "title-desc" -> [desc: :title]
+      _ -> [asc: :title]
+    end
+  end
 
   defp query_category_descendants(id, query \\ {"category_tree", Category}) do
     category_initial_query =
