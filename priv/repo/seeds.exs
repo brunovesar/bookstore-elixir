@@ -10,11 +10,22 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-bruno =
+griffin =
   Bookstore.Repo.insert!(%Bookstore.Store.Author{
-    name: "Bruno Vescovi",
-    birth_date: ~D[1993-08-27]
+    name: "G. Edward Griffin",
+    birth_date: ~D[1957-02-27]
   })
+
+quigley =
+  Bookstore.Repo.insert!(%Bookstore.Store.Author{
+    name: "Carrol Quigley",
+    birth_date: ~D[1937-02-27]
+  })
+
+sutton = Bookstore.Repo.insert!(%Bookstore.Store.Author{
+  name: "Anthony Sutton",
+  birth_date: ~D[1925-02-14]
+})
 
 tolkien =
   Bookstore.Repo.insert!(%Bookstore.Store.Author{
@@ -136,6 +147,39 @@ books_to_insert = [
     image: "around_the_world_in_eighty_days.jpg",
     author_id: verne.id,
     category_id: trips.id
+  },
+  %Bookstore.Store.Book{
+    isbn: "ISBN-978-0912986456",
+    title: "The creature from jekyll island",
+    publish_date: ~D[1977-04-28],
+    price: 25.0,
+    quantity: 10,
+    editor: "Planeta",
+    image: "creature_from_jekyll_island.jpg",
+    author_id: griffin.id,
+    category_id: historical.id
+  },
+  %Bookstore.Store.Book{
+    isbn: "ISBN-978-0026001304",
+    title: "Tragedy and hope",
+    publish_date: ~D[1979-04-28],
+    price: 25.0,
+    quantity: 10,
+    editor: "Planeta",
+    image: "tragedy_and_hope.jpg",
+    author_id: quigley.id,
+    category_id: historical.id
+  },
+  %Bookstore.Store.Book{
+    isbn: "ISBN-978-1939438126",
+    title: "The war on gold",
+    publish_date: ~D[1977-04-28],
+    price: 25.0,
+    quantity: 10,
+    editor: "Planeta",
+    image: "war_on_gold.jpg",
+    author_id: sutton.id,
+    category_id: historical.id
   }
 ]
 

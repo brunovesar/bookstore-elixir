@@ -1,43 +1,50 @@
-<div class="book_view">
-  <%= if @item.image do %>
-    <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image path broken" />
-  <% else %>
-    <img class="book_view_image" src={~p"/images/not_found.jpg"} alt="Image not found" />
-  <% end %>
-  <div class="book_view_content">
-    <p class="book_view_title">
-      Title: <%= @item.title %>
-    </p>
-    <p class="book_view_description">
-      Author: <%= @item.author.name %>
-    </p>
-    <p class="book_view_description">
-      Category: <%= @item.category.name %>
-    </p>
-    <p class="book_view_description">
-      Price: <%= @item.price %>
-    </p>
-    <p class="book_view_description">
-      Quantity: <%= @item.quantity %>
-    </p>
-    <p class="book_view_description">
-      Editor: <%= @item.editor %>
-    </p>
-  </div>
-  <%= if @current_user do %>
-    <div class="book_actions">
-      <.link class="book_action" href={~p"/books/#{@item.isbn}/edit"}>
-        edit
-      </.link>
-
-      <.link
-        class="book_action"
-        href={~p"/books/#{@item.isbn}"}
-        method="delete"
-        data-confirm="Are you sure?"
-      >
-        delete
-      </.link>
+<div>
+  <div class="book_view">
+    <%= if @item.image do %>
+      <img class="book_view_image" src={~p"/images/books/#{@item.image}"} alt="Image path broken" />
+    <% else %>
+      <img class="book_view_image" src={~p"/images/not_found.jpg"} alt="Image not found" />
+    <% end %>
+    <div class="book_view_content">
+      <p class="book_view_title">
+        Title: <%= @item.title %>
+      </p>
+      <p class="book_view_description">
+        Author: <%= @item.author.name %>
+      </p>
+      <p class="book_view_description">
+        Category: <%= @item.category.name %>
+      </p>
+      <p class="book_view_description">
+        Price: <%= @item.price %>
+      </p>
+      <p class="book_view_description">
+        Quantity: <%= @item.quantity %>
+      </p>
+      <p class="book_view_description">
+        Editor: <%= @item.editor %>
+      </p>
     </div>
-  <% end %>
+    <%= if @current_user do %>
+      <div class="book_actions">
+        <.link class="book_action" href={~p"/books/#{@item.isbn}/edit"}>
+          edit
+        </.link>
+  
+        <.link
+          class="book_action"
+          href={~p"/books/#{@item.isbn}"}
+          method="delete"
+          data-confirm="Are you sure?"
+        >
+          delete
+        </.link>
+      </div>
+    <% end %>
+    <script src="//cdn.doofinder.com/recommendations/js/doofinderRecommendation.min.js"></script>
+  </div>
+  <df-recommendations
+    hashid="2d5d9b304cb7b20b5040b317d4c40622"
+    total-products="10"
+  ></df-recommendations>  
 </div>

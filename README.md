@@ -11,6 +11,10 @@ To interact through the graphql api
   * Make sure you send the `Authorization` header with the value `Bearer {token}`
 Now you can query authors, categories and books and also mutate authors and categories
 
+To make your server api publicly visible through an url you can use ngrok
+  * Configure ngrok following it's installation guide
+  * Run `ngrok http --domain=forcibly-ethical-kiwi.ngrok-free.app 4000`
+
 ## Learn more
 
   * Official website: https://www.phoenixframework.org/

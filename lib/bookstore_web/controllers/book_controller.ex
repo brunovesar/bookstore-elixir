@@ -36,6 +36,9 @@ defmodule BookstoreWeb.BookController do
     end
   end
 
+  def home(conn, _) do
+    render(conn, :home)
+  end
   def edit(conn, %{"id" => id}) do
     book = Store.get_book(id)
     authors = Store.all_authors() |> Enum.map(fn item -> [key: item.name, value: item.id] end)
@@ -51,6 +54,14 @@ defmodule BookstoreWeb.BookController do
     )
   end
 
+  def export(conn, _) do
+    send_download(
+      conn,
+      {:binary, Store.export_books() |> Enum.to_list()},[
+      content_type: "application/csv",
+      filename: "books.csv"]
+    )
+  end
   def new(conn, changeset \\ %{}) do
     authors = Store.all_authors() |> Enum.map(fn item -> [key: item.name, value: item.id] end)
 

@@ -42,6 +42,13 @@ defmodule Bookstore.Store do
 
   def all_categories(), do: Repo.all(Category)
 
+  def all_categories_ascendants(id) do
+    query =
+      query_category_ascendants(id)
+
+    Repo.all(query)
+  end
+
   def all_categories_descendants(id) do
     query =
       query_category_descendants(id)
@@ -59,6 +66,21 @@ defmodule Bookstore.Store do
 
   def delete_category(id) do
     Repo.delete(%Category{id: id})
+  end
+
+  def export_books() do
+    header = [["id", "title", "book_title", "url", "image_url", "price", "author", "category", "brand"]]
+    books_as_lists = Repo.all(Book |> preload([:author])) |> Stream.map(&[
+      &1.isbn,
+      "#{&1.title}, #{&1.author.name}",
+      &1.title,
+      "https://forcibly-ethical-kiwi.ngrok-free.app/books/#{&1.isbn}",
+      "https://forcibly-ethical-kiwi.ngrok-free.app/images/books/#{&1.image}",
+      "#{&1.price}",
+      &1.author.name,
+      all_categories_ascendants(&1.category_id) |> Enum.map(fn category -> category.name end) |> Enum.reverse() |> Enum.join(" > "),
+      &1.editor])
+    Stream.concat(header, books_as_lists) |> CSV.encode()
   end
 
   def get_author(id), do: Repo.get(Author, id)
@@ -91,6 +113,24 @@ defmodule Bookstore.Store do
       "title-desc" -> [desc: :title]
       _ -> [asc: :title]
     end
+  end
+
+  defp query_category_ascendants(id, query \\ {"category_tree", Category}) do
+    category_initial_query =
+      Category
+      |> where(id: ^id)
+
+    category_tree_recursion_query =
+      Category
+      |> join(:inner, [c], ct in "category_tree", on: c.id == ct.parent_id)
+
+    category_tree_query =
+      category_initial_query
+      |> union_all(^category_tree_recursion_query)
+
+    query
+    |> recursive_ctes(true)
+    |> with_cte("category_tree", as: ^category_tree_query)
   end
 
   defp query_category_descendants(id, query \\ {"category_tree", Category}) do

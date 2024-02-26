@@ -26,6 +26,7 @@ defmodule BookstoreWeb.Router do
   scope "/" do
     pipe_through :graphql
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: BookstoreWeb.Schema
+    get "/books-csv", BookstoreWeb.BookController, :export
   end
 
   scope "/" do
@@ -50,12 +51,7 @@ defmodule BookstoreWeb.Router do
   scope "/", BookstoreWeb do
     pipe_through :browser
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: BookstoreWeb.Schema,
-      interface: :simple,
-      context: %{pubsub: BookstoreWeb.Endpoint}
-
-    live "/", BooksLive
+    get "/", BookController, :home
     live "/books", BooksLive
     get "/books/:id", BookController, :show
   end
