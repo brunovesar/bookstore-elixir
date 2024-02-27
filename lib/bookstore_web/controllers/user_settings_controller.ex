@@ -9,10 +9,10 @@ defmodule BookstoreWeb.UserSettingsController do
   def edit(conn, _params) do
     user = conn.assigns.current_user
     token = Accounts.get_header_token_by_user(user)
-
-    user_token = Base.url_encode64(token.token)
-    conn = assign(conn, :user_auth_token, user_token)
-    render(conn, :edit)
+    user_token = if not is_nil(token), do: Base.url_encode64(token.token)
+    conn
+      |> assign(:user_auth_token, user_token)
+      |> render(:edit)
   end
 
   def update(conn, %{"action" => "update_email"} = params) do
@@ -35,7 +35,9 @@ defmodule BookstoreWeb.UserSettingsController do
         |> redirect(to: ~p"/users/settings")
 
       {:error, changeset} ->
-        render(conn, :edit, email_changeset: changeset)
+        conn
+          |> assign(:user_auth_token, nil)
+          |> render(:edit, email_changeset: changeset)
     end
   end
 
@@ -51,7 +53,9 @@ defmodule BookstoreWeb.UserSettingsController do
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->
-        render(conn, :edit, password_changeset: changeset)
+        conn
+          |> assign(:user_auth_token, nil)
+          |> render(:edit, password_changeset: changeset)
     end
   end
 
